@@ -1,30 +1,20 @@
-using System;
+// https://bitbucket.org/alkee/aus
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace VacuumShaders.CurvedWorld.Demo 
+namespace aus.Ui
 {
-    [AddComponentMenu("VacuumShaders/Curved World/Example/FPS Counter")]
     [RequireComponent(typeof(Text))]
-    public class FPSCounter : MonoBehaviour
+    [DisallowMultipleComponent]
+    public class FpsCounter : MonoBehaviour
     {
-        //////////////////////////////////////////////////////////////////////////////
-        //                                                                          // 
-        //Variables                                                                 //                
-        //                                                                          //               
-        //////////////////////////////////////////////////////////////////////////////
         const float fpsMeasurePeriod = 0.5f;
         private int m_FpsAccumulator = 0;
         private float m_FpsNextPeriod = 0;
         private int m_CurrentFps;
         const string display = "{0} FPS";
         Text uiText;
-        //////////////////////////////////////////////////////////////////////////////
-        //                                                                          // 
-        //Unity Functions                                                           //                
-        //                                                                          //               
-        //////////////////////////////////////////////////////////////////////////////
-        private void Start()
+        void Start()
         {
             m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
             uiText = GetComponent<Text>();
@@ -37,10 +27,10 @@ namespace VacuumShaders.CurvedWorld.Demo
             m_FpsAccumulator++;
             if (Time.realtimeSinceStartup > m_FpsNextPeriod)
             {
-                m_CurrentFps = (int) (m_FpsAccumulator/fpsMeasurePeriod);
+                m_CurrentFps = (int)(m_FpsAccumulator / fpsMeasurePeriod);
                 m_FpsAccumulator = 0;
                 m_FpsNextPeriod += fpsMeasurePeriod;
-                
+
                 uiText.text = string.Format(display, m_CurrentFps);
             }
         }

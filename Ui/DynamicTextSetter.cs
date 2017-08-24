@@ -1,4 +1,5 @@
-﻿using System;
+﻿// https://bitbucket.org/alkee/aus
+using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-namespace UI
+namespace aus.Ui
 {
     [RequireComponent(typeof(Text))]
     [DisallowMultipleComponent]

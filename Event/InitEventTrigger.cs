@@ -1,22 +1,26 @@
-﻿using UnityEngine;
+﻿// https://bitbucket.org/alkee/aus
+using UnityEngine;
 using UnityEngine.Events;
 
-public class InitEventTrigger : MonoBehaviour
+namespace aus.Event
 {
-    [TextArea]
-    public string JustComment; // because component has no place to comment
-
-    public UnityEvent OnAwake;
-    public UnityEvent OnStart;
-
-    void Awake()
+    public class InitEventTrigger : MonoBehaviour
     {
-        if (OnAwake != null) OnAwake.Invoke();
-    }
+        [TextArea]
+        public string JustComment; // because component has no place to comment
 
-    // Use this for initialization
-    void Start()
-    {
-        if (OnStart != null) OnStart.Invoke();
+        public UnityEvent OnAwake;
+        public UnityEvent OnStart;
+
+        void Awake()
+        {
+            if (OnAwake != null) OnAwake.Invoke();
+        }
+
+        // Use this for initialization
+        void Start()
+        {
+            if (OnStart != null) OnStart.Invoke();
+        }
     }
 }
