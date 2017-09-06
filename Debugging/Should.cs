@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace aus.Debugging
 {
+    /// <summary>
+    /// shouldjs(https://github.com/shouldjs/should.js) like ...
+    /// </summary>
     public class Should
     {
         public Should(MonoBehaviour source)
