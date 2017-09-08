@@ -32,7 +32,7 @@ namespace aus.Debugging
         private MonoBehaviour src;
     }
 
-    public static class ShouldExtentions
+    public static class ShouldExtension
     {
         public static Should Should(this MonoBehaviour obj)
         {
