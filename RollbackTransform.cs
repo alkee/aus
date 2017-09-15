@@ -49,4 +49,23 @@ namespace aus
         private Quaternion oRot;
         private Vector3 oScale;
     }
+
+    /// <summary>
+    /// Makes transform to
+    ///     position = zero
+    ///     rotation = identity
+    ///     localScale = one
+    /// and recovers original transform disposed
+    /// </summary>
+    public class NormalizeAndRollbackTransform : RollbackTransform
+    {
+        public NormalizeAndRollbackTransform(Transform target)
+            : base(target)
+        {
+            target.position = Vector3.zero;
+            target.rotation = Quaternion.identity;
+            target.localScale = Vector3.one;
+        }
+    }
+
 }
