@@ -22,6 +22,7 @@ namespace aus.Ui
         {
             NoCache = !cache;
             ImageUrl = url;
+            localFileName = MakeLocalFileName(ImageUrl);
             Refresh();
         }
 
