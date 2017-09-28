@@ -95,11 +95,18 @@ namespace aus.Ui
 
             var www = new WWW("file://" + localPath); // easier way to get source image size
             yield return www;
-            Debug.Assert(string.IsNullOrEmpty(www.error));
-            target.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), Vector2.one * 0.5f);
-            if (NativeSize) target.SetNativeSize();
+            if (string.IsNullOrEmpty(www.error) == false)
+            { // failed
+                Debug.LogErrorFormat("error to apply file : {0}", localPath);
+                ApplyTexture(FailImage);
+            }
+            else
+            {
+                target.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), Vector2.one * 0.5f);
+                if (NativeSize) target.SetNativeSize();
+                // UNDONE: width height ratio, offset, fitting
+            }
 
-            // UNDONE: width height ratio, offset, fitting
         }
 
         private void ApplyTexture(Texture2D texture)
