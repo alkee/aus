@@ -22,8 +22,23 @@ namespace aus.Ui
         {
             NoCache = !cache;
             ImageUrl = url;
-            localFileName = MakeLocalFileName(ImageUrl);
+            SetLocalPath(ImageUrl);
             Refresh();
+        }
+
+        public void SetImageCache(string path)
+        {
+            NoCache = false;
+            ImageUrl = "file://" + path;
+            localFilePath = path;
+            Refresh();
+        }
+
+        public bool DeleteCacheFile()
+        {
+            if (File.Exists(localFilePath) == false) return false;
+            File.Delete(localFilePath);
+            return true;
         }
 
         public void Refresh()
@@ -36,7 +51,7 @@ namespace aus.Ui
         {
             target = GetComponent<Image>();
             if (string.IsNullOrEmpty(ImageUrl) || enabled == false) return;
-            localFileName = MakeLocalFileName(ImageUrl);
+            SetLocalPath(ImageUrl);
         }
 
         void Start()
@@ -46,13 +61,13 @@ namespace aus.Ui
         }
 
         private Image target;
-        private string localFileName;
+        private string localFilePath;
 
         private IEnumerator BeginDownload()
         {
             if (string.IsNullOrEmpty(ImageUrl)) yield break; // invalid url
 
-            string localPath = Path.Combine(Application.persistentDataPath, localFileName);
+            string localPath = localFilePath;
 
             if (File.Exists(localPath) && NoCache == false)
             {
@@ -91,7 +106,7 @@ namespace aus.Ui
 
         private IEnumerator ApplySprite()
         {
-            string localPath = Path.Combine(Application.persistentDataPath, localFileName);
+            string localPath = localFilePath;
 
             var www = new WWW("file://" + localPath); // easier way to get source image size
             yield return www;
@@ -115,9 +130,9 @@ namespace aus.Ui
             target.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
         }
 
-        private static string MakeLocalFileName(string url)
+        private void SetLocalPath(string url)
         {
-            return Hash.Sha1(url.Trim());
+            localFilePath = Path.Combine(Application.persistentDataPath, Hash.Sha1(url.Trim()));
         }
     }
 }
