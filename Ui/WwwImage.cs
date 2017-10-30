@@ -10,8 +10,16 @@ namespace aus.Ui
     public class WwwImage : MonoBehaviour
     {
         public string ImageUrl;
-        public bool NativeSize = false;
         public bool NoCache = false;
+        public ResizeOptionEnum ResizeOption = ResizeOptionEnum.FIT_TO_SIZE;
+
+        public enum ResizeOptionEnum
+        {
+            // texture fit to this transform
+            FIT_TO_SIZE,
+            PRESERVE_RATIO,
+            NATIVE_SIZE,
+        }
 
         [Header("image preset")]
         public Texture2D InitialImage;
@@ -118,7 +126,14 @@ namespace aus.Ui
             else
             {
                 target.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), Vector2.one * 0.5f);
-                if (NativeSize) target.SetNativeSize();
+                if (ResizeOption == ResizeOptionEnum.NATIVE_SIZE)
+                {
+                    target.SetNativeSize();
+                }
+                else if (ResizeOption == ResizeOptionEnum.PRESERVE_RATIO)
+                {
+                    target.preserveAspect = true;
+                }
                 // UNDONE: width height ratio, offset, fitting
             }
 
