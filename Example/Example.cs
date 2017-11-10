@@ -7,7 +7,8 @@ namespace aus.Example
 {
     public class Example : MonoBehaviour
     {
-        public MinMaxRange MinMaxRangeValue;
+        public Property.MinMaxRange MinMaxRangeValue;
+        public Property.SceneField SelectedScene;
 
         public GameObject SampleTarget1;
         public Text InitEventTriggerOutput;

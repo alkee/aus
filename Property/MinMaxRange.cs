@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace aus
+namespace aus.Property
 {
     // modified by alkee
     // from http://www.grapefruitgames.com/blog/2013/11/a-min-max-range-for-unity/

@@ -531,6 +531,9 @@ MonoBehaviour:
   MinMaxRangeValue:
     rangeStart: 0
     rangeEnd: 0
+  SelectedScene:
+    m_SceneAsset: {fileID: 102900000, guid: 30e9b25621fbc4b4fb46bb6c0f42b9df, type: 3}
+    m_SceneName: Example
   SampleTarget1: {fileID: 511823699}
   InitEventTriggerOutput: {fileID: 1534098956}
 --- !u!4 &511823701
