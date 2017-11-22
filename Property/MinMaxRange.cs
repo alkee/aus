@@ -45,6 +45,13 @@ namespace aus.Property
         {
             return Random.Range(rangeStart, rangeEnd);
         }
+
+        public bool IsIn(float value, bool include = false)
+        {
+            if (!include && value > rangeStart && value < rangeEnd) return true;
+            else if (include && value >= rangeEnd && value <= rangeEnd) return true;
+            return false;
+        }
     }
 
 
@@ -83,11 +90,13 @@ namespace aus.Property
                 // slider area
                 if (range.showSlider)
                 {
-                    EditorGUI.LabelField(new Rect(position.x, position.y + yDivision, position.width, yDivision)
+                    const float INDENT = 130;
+
+                    EditorGUI.LabelField(new Rect(position.x + INDENT, position.y + yDivision, position.width - INDENT, yDivision)
                         , range.minLimit.ToString("0.##"));
-                    EditorGUI.LabelField(new Rect(position.x + position.width - 28f, position.y + yDivision, position.width, yDivision)
+                    EditorGUI.LabelField(new Rect(position.x + position.width - 28f, position.y + yDivision, position.width - INDENT, yDivision)
                         , range.maxLimit.ToString("0.##"));
-                    EditorGUI.MinMaxSlider(new Rect(position.x + 24f, position.y + yDivision, position.width - 58f, yDivision)
+                    EditorGUI.MinMaxSlider(new Rect(position.x + INDENT + 24f, position.y + yDivision, position.width - INDENT - 58f, yDivision)
                         , ref newMin, ref newMax, range.minLimit, range.maxLimit);
                 }
                 // text input area
