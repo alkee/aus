@@ -43,7 +43,10 @@ namespace aus.Action
             if (ChasingTarget == null || rb == null) return;
 
             var direction = GetNormalizedTargetDirection();
-            rb.velocity = direction * ChasingSpeed;
+
+            // same as rb.velocity = direction * ChasingSpeed;
+            // but AddForce makes boundary force on collision
+            rb.AddForce(direction * ChasingSpeed - rb.velocity, ForceMode.VelocityChange);
         }
 
         private Rigidbody rb = null;
