@@ -87,11 +87,11 @@ namespace aus.Action
             p = p * Time.deltaTime;
 
             // Angryboy: Removed key-press requirement, now perma-locked to the Y plane
-            Vector3 newPosition = transform.position;//If player wants to move on X and Z axis only
+            Vector3 newPosition = transform.localPosition;//If player wants to move on X and Z axis only
             transform.Translate(p, Camera.main.transform);
-            newPosition.x = transform.position.x;
-            newPosition.z = transform.position.z;
-            newPosition.y = transform.position.y;
+            newPosition.x = transform.localPosition.x;
+            newPosition.z = transform.localPosition.z;
+            newPosition.y = transform.localPosition.y;
 
             if (Input.GetKey(KeyCode.Space))
             {
@@ -99,7 +99,7 @@ namespace aus.Action
             }
             if (Input.GetKey(KeyCode.LeftControl)) newPosition.y += -speedMultiplier;
 
-            transform.position = newPosition;
+            transform.localPosition = newPosition;
         }
 
         private float totalRun = 1.0f;
