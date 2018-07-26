@@ -21,7 +21,10 @@ namespace aus.InterScene
             var thisScene = gameObject.scene;
             var count = SceneManager.sceneCount;
             var dependent = SceneManager.GetSceneByPath(DependentScene.ScenePath);
-            if (dependent.isLoaded) return; // nothring to do
+
+            // if the dependent is already loading somewhere else,
+            //    isLoaded could be false BUT dependent.IsValid() is TRUE.
+            if (dependent.IsValid() || dependent.isLoaded) return; // prevent duplication
 
             SceneManager.LoadScene(DependentScene.BuildIndex, LoadSceneMode.Additive);
         }
