@@ -9,10 +9,9 @@ namespace aus.InterScene
         [Tooltip("loads additive scene automatically")]
         public Property.SceneField DependentScene;
 
-        // TODO: asyncronous load option
-
-        void Start()
+        void Awake()
         {
+            if (enabled == false) return;
             Debug.Assert(DependentScene != null && string.IsNullOrEmpty(DependentScene.SceneName) == false
                 , "Dependent scene is not set");
             Debug.Assert(DependentScene.IsOnBuildList
@@ -26,7 +25,13 @@ namespace aus.InterScene
             //    isLoaded could be false BUT dependent.IsValid() is TRUE.
             if (dependent.IsValid() || dependent.isLoaded) return; // prevent duplication
 
+            // TODO: asyncronous load option
             SceneManager.LoadScene(DependentScene.BuildIndex, LoadSceneMode.Additive);
+        }
+
+        // just to use 'enabled' in inspector
+        void Start()
+        {
         }
     }
 }
