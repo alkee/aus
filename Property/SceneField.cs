@@ -26,30 +26,6 @@ namespace aus.Property
             }
         }
 
-        public string ScenePath
-        {
-            get
-            {
-                return AssetDatabase.GetAssetPath(m_SceneAsset);
-            }
-        }
-
-        public int BuildIndex
-        {
-            get
-            {
-                return SceneUtility.GetBuildIndexByScenePath(ScenePath);
-            }
-        }
-
-        public bool IsOnBuildList
-        {
-            get
-            {
-                return SceneUtility.GetBuildIndexByScenePath(ScenePath) >= 0;
-            }
-        }
-
         // makes it work with the existing Unity methods (LoadLevel/LoadScene)
         public static implicit operator string(SceneField sceneField)
         {

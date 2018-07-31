@@ -14,19 +14,18 @@ namespace aus.InterScene
             if (enabled == false) return;
             Debug.Assert(DependentScene != null && string.IsNullOrEmpty(DependentScene.SceneName) == false
                 , "Dependent scene is not set");
-            Debug.Assert(DependentScene.IsOnBuildList
-                , "you cannot set the scene which is not on the build list");
 
             var thisScene = gameObject.scene;
             var count = SceneManager.sceneCount;
-            var dependent = SceneManager.GetSceneByPath(DependentScene.ScenePath);
+            // TODO: duplicated scene name ; AssetDatabase is only available in EDITOR
+            var dependent = SceneManager.GetSceneByName(DependentScene.SceneName);
 
             // if the dependent is already loading somewhere else,
             //    isLoaded could be false BUT dependent.IsValid() is TRUE.
             if (dependent.IsValid() || dependent.isLoaded) return; // prevent duplication
 
             // TODO: asyncronous load option
-            SceneManager.LoadScene(DependentScene.BuildIndex, LoadSceneMode.Additive);
+            SceneManager.LoadScene(DependentScene.SceneName, LoadSceneMode.Additive);
         }
 
         // just to use 'enabled' in inspector
