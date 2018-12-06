@@ -23,10 +23,19 @@ namespace aus.Action
          */
 
         public float mouseSensitivity = 2.5f; // Mouse rotation sensitivity.
-        public float mainSpeed = 10.0f; //regular speed
-        public float shiftAdd = 5.5f; //multiplied by how long shift is held.  Basically running
-        public float maxShift = 1000.0f; //Maximum speed when holdin gshift
-        public float camSens = 0.25f; //How sensitive it with mouse
+        public float mainSpeed = 10.0f; // regular speed
+        [Range(0.0f, 1.0f)]
+        public float preciseRate = 0.2f; // to make precise speed
+
+        [Header("Key bindings")]
+        public KeyCode Precise = KeyCode.LeftShift;
+        public KeyCode MoveUp = KeyCode.Space;
+        public KeyCode MoveDown = KeyCode.LeftControl;
+        public KeyCode MoveFoward = KeyCode.W;
+        public KeyCode MoveBackward = KeyCode.S;
+        public KeyCode StepLeft = KeyCode.A;
+        public KeyCode StepRight = KeyCode.D;
+
 
         // physics and camera scpecific parts are removed
         // because it's more simple and independent.
@@ -34,7 +43,6 @@ namespace aus.Action
 
         void Start()
         {
-            rotationY = -transform.localEulerAngles.x; // to keep camera angles by editor
         }
 
         void Update()
@@ -56,77 +64,69 @@ namespace aus.Action
             }
             if (isRotating)
             {
+                if (transform.rotation != lastRot)
+                { // something moved camera
+                    rotationY = -transform.localEulerAngles.x;
+                }
+
                 // Made by LookForward
                 // Angryboy: Replaced min/max Y with numbers, not sure why we had variables in the first place
                 float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
                 rotationY += Input.GetAxis("Mouse Y") * mouseSensitivity;
                 rotationY = Mathf.Clamp(rotationY, -90, 90);
-                transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0.0f);
+                transform.localEulerAngles = new Vector3(-rotationY, rotationX, transform.localEulerAngles.z);
+
+                lastRot = transform.rotation;
             }
 
-            //Keyboard commands
-            Vector3 p = GetBaseInput();
-            if (Input.GetKey(KeyCode.LeftShift))
+            // Keyboard commands
+            // TODO: find more good way to detect unwanted situation of keyboard command
+            if (EventSystem.current != null
+                && EventSystem.current.currentSelectedGameObject != null
+                && EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.InputField>() != null)
             {
-                totalRun += Time.deltaTime;
-                p = p * totalRun * shiftAdd;
-                p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
-                p.y = Mathf.Clamp(p.y, -maxShift, maxShift);
-                p.z = Mathf.Clamp(p.z, -maxShift, maxShift);
-                // Angryboy: Use these to ensure that Y-plane is affected by the shift key as well
-                speedMultiplier = totalRun * shiftAdd * Time.deltaTime;
-                speedMultiplier = Mathf.Clamp(speedMultiplier, -maxShift, maxShift);
-            }
-            else
-            {
-                totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
-                p = p * mainSpeed;
-                speedMultiplier = mainSpeed * Time.deltaTime; // Angryboy: More "correct" speed
+                return;
             }
 
-            p = p * Time.deltaTime;
-
-            // Angryboy: Removed key-press requirement, now perma-locked to the Y plane
-            Vector3 newPosition = transform.localPosition;//If player wants to move on X and Z axis only
-            transform.Translate(p, Camera.main.transform);
-            newPosition.x = transform.localPosition.x;
-            newPosition.z = transform.localPosition.z;
-            newPosition.y = transform.localPosition.y;
-
-            if (Input.GetKey(KeyCode.Space))
-            {
-                newPosition.y += speedMultiplier;
-            }
-            if (Input.GetKey(KeyCode.LeftControl)) newPosition.y += -speedMultiplier;
-
-            transform.localPosition = newPosition;
+            var p = GetBaseInput();
+            var dp = p * Time.deltaTime * mainSpeed;
+            transform.Translate(dp);
         }
 
-        private float totalRun = 1.0f;
         private bool isRotating = false; // Angryboy: Can be called by other things (e.g. UI) to see if camera is rotating
-        private float speedMultiplier; // Angryboy: Used by Y axis to match the velocity on X/Z axis
         private float rotationY = 0.0f;
+        private Quaternion lastRot;
 
         private Vector3 GetBaseInput()
         { //returns the basic values, if it's 0 than it's not active.
             Vector3 p_Velocity = new Vector3();
-            if (Input.GetKey(KeyCode.W))
+            // TODO: remove hardcoded keycode
+            if (Input.GetKey(MoveFoward))
             {
                 p_Velocity += new Vector3(0, 0, 1);
             }
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(MoveBackward))
             {
                 p_Velocity += new Vector3(0, 0, -1);
             }
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(StepLeft))
             {
                 p_Velocity += new Vector3(-1, 0, 0);
             }
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(StepRight))
             {
                 p_Velocity += new Vector3(1, 0, 0);
             }
-            return p_Velocity;
+            if (Input.GetKey(MoveUp))
+            {
+                p_Velocity += new Vector3(0, 1, 0);
+            }
+            if (Input.GetKey(MoveDown))
+            {
+                p_Velocity += new Vector3(0, -1, 0);
+            }
+            if (p_Velocity.sqrMagnitude > 0) p_Velocity.Normalize();
+            return p_Velocity * (Input.GetKey(Precise) ? preciseRate : 1.0f);
         }
     }
 }
