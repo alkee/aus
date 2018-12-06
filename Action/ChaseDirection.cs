@@ -7,7 +7,7 @@ namespace aus.Action
     public class ChaseDirection : MonoBehaviour
     {
         public Transform ChasingTarget;
-        public float ChasingSpeed = 20;
+        public float ChasingSpeed = 1;
         public Property.XyzBool FreezeAxis = new Property.XyzBool { X = true, Z = true };
 
         public void ChangeChasingTarget(Transform target)
@@ -27,7 +27,9 @@ namespace aus.Action
 
             direction.Normalize();
             var dt = Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), dt * ChasingSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation
+                , Quaternion.LookRotation(direction)
+                , dt * ChasingSpeed);
         }
     }
 }

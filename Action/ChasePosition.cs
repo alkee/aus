@@ -1,6 +1,7 @@
 ﻿// https://bitbucket.org/alkee/aus
 
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace aus.Action
 {
@@ -8,7 +9,12 @@ namespace aus.Action
     {
         public Transform ChasingTarget;
         public float ChasingSpeed = 1;
+        [Tooltip("이 거리보다 먼 경우에만 chasing")]
+        public float StopDistance = 0.5f; // TODO: editor 에서 stop distance gizmo 표시
         public Property.XyzBool FreezeAxis = new Property.XyzBool { Y = true };
+        [Header("Events")]
+        public UnityEvent OnDeparture;
+        public UnityEvent OnArrival;
 
         public void ChangeChasingTarget(Transform target)
         {
@@ -29,8 +35,9 @@ namespace aus.Action
         }
 
         void Update()
-        {
+        { // rigid body 를 이용하지 않는 경우
             if (ChasingTarget == null || rb != null) return;
+            if (IsInStopDistance()) return;
 
             var direction = GetNormalizedTargetDirection();
 
@@ -39,8 +46,9 @@ namespace aus.Action
         }
 
         void FixedUpdate()
-        {
+        { // rigid body 를 이용하는 경우
             if (ChasingTarget == null || rb == null) return;
+            if (IsInStopDistance()) return;
 
             var direction = GetNormalizedTargetDirection();
 
@@ -50,6 +58,23 @@ namespace aus.Action
         }
 
         private Rigidbody rb = null;
+        private bool moving = false;
+
+        private bool IsInStopDistance()
+        {
+            var shoudStop = Vector3.Distance(transform.position, ChasingTarget.position) < StopDistance;
+            if (shoudStop && moving)
+            {
+                moving = false;
+                OnArrival.Invoke();
+            }
+            else if (shoudStop == false && moving == false)
+            {
+                moving = true;
+                OnDeparture.Invoke();
+            }
+            return shoudStop;
+        }
 
         private Vector3 GetNormalizedTargetDirection()
         {
