@@ -926,11 +926,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinMaxRangeValue:
-    rangeStart: 0
-    rangeEnd: 0
+    rangeStart: 1.2368422
+    rangeEnd: 3.3092113
   SelectedScene:
     m_SceneAsset: {fileID: 102900000, guid: 30e9b25621fbc4b4fb46bb6c0f42b9df, type: 3}
     m_SceneName: Example
+  ShowConditional: 0
+  ConditionalValue: 0
   SampleTarget1: {fileID: 511823699}
   InitEventTriggerOutput: {fileID: 1534098956}
 --- !u!4 &511823701

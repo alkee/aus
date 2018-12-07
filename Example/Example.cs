@@ -2,14 +2,24 @@
 using UnityEngine.UI;
 
 using aus.Debugging;
+using aus.Property;
 
 namespace aus.Example
 {
     public class Example : MonoBehaviour
     {
-        public Property.MinMaxRange MinMaxRangeValue;
-        public Property.SceneField SelectedScene;
+        [Header("Simple property and attributes")]
+        [MinMaxRange(1, 10, true)]
+        public MinMaxRange MinMaxRangeValue;
+        public SceneField SelectedScene;
 
+        [Header("ConditionalHide attribute")]
+        public bool ShowConditional;
+        [ConditionalHide("ShowConditional", true)]
+        public int ConditionalValue;
+
+        [Space(10)]
+        [Header("References from scene")]
         public GameObject SampleTarget1;
         public Text InitEventTriggerOutput;
 

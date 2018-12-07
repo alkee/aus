@@ -73,6 +73,8 @@ namespace aus.Property
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var defualtHeight = base.GetPropertyHeight(property, label);
+
+            // TODO: extend 변경(OnGUI)보다 GetPropertyHeight 호출이 빨라 ERROR_BOX 가 나타나더라도 일정시간 defaultHeight 으로 높이가 설정되는 문제 수정
             if (extend == false) return defualtHeight;
 
             return defualtHeight * (1 + ERROR_BOX_HEIGHT_RATIO);
