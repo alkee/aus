@@ -1,4 +1,4 @@
-﻿// https://bitbucket.org/alkee/aus
+// https://bitbucket.org/alkee/aus
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -67,6 +67,8 @@ namespace aus.Action
                 if (transform.rotation != lastRot)
                 { // something moved camera
                     rotationY = -transform.localEulerAngles.x;
+                    if (rotationY < -180) rotationY += 360;
+                    Debug.Log("rotation changed : " + rotationY);
                 }
 
                 // Made by LookForward
