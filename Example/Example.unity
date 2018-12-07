@@ -931,9 +931,16 @@ MonoBehaviour:
   SelectedScene:
     m_SceneAsset: {fileID: 102900000, guid: 30e9b25621fbc4b4fb46bb6c0f42b9df, type: 3}
     m_SceneName: Example
+  RuntimeReadonly: 1
+  FreezeAxis:
+    X: 0
+    Y: 1
+    Z: 0
   ShowConditional: 0
   ConditionalValue: 0
-  SampleTarget1: {fileID: 511823699}
+  TestMD5: 0cbc6611f5540bd0809a388dc95a615b
+  TestSHA1: 640ab2bae07bedc4c163f679a746f7ab7fb5d1fa
+  SampleTarget1: {fileID: 413175453}
   InitEventTriggerOutput: {fileID: 1534098956}
 --- !u!4 &511823701
 Transform:
@@ -2124,7 +2131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 22.1}
+  m_AnchoredPosition: {x: 0, y: 22.099976}
   m_SizeDelta: {x: 0, y: 44.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1205331409

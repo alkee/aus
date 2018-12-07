@@ -68,7 +68,6 @@ namespace aus.Action
                 { // something moved camera
                     rotationY = -transform.localEulerAngles.x;
                     if (rotationY < -180) rotationY += 360;
-                    Debug.Log("rotation changed : " + rotationY);
                 }
 
                 // Made by LookForward

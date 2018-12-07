@@ -60,6 +60,13 @@ namespace aus
             frame(to);
         }
 
+        public static IEnumerator WaitAndRun(float duration, Func<IEnumerator> frame)
+        {
+            yield return new WaitForSeconds(duration);
+            yield return frame();
+        }
+
+        // yield is not allowed in C# lambda(CS1621)
         public static IEnumerator WaitAndRun(float duration, System.Action frame)
         {
             yield return new WaitForSeconds(duration);
