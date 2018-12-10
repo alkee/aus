@@ -15,7 +15,7 @@ namespace aus.Example
         [ReadOnly(true)]
         [Tooltip("You cannot modify this value while running by inspector")]
         public float RuntimeReadonly = 1.0f;
-        public XyzBool FreezeAxis = new XyzBool { X = false, Y = true, Z = false };
+        public XyzBool XyzBoolean = new XyzBool { X = false, Y = true, Z = false };
 
         [Header("ConditionalHide attribute")]
         public bool ShowConditional;
@@ -68,7 +68,7 @@ namespace aus.Example
             #endregion
 
             #region Coroutines
-            StartCoroutine(Coroutines.WaitAndRun(3 // run after 3 seconds
+            StartCoroutine(Coroutines.WaitAndRun(1.0f // run after 1 seconds
                 , () => // yield is not allowed in C# lambda(CS1621)
                 {
                     var re = SampleTarget1.GetComponent<MeshRenderer>().material;
