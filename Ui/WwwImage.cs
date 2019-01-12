@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace aus.Ui
@@ -85,8 +86,8 @@ namespace aus.Ui
 
             ApplyTexture(LoadingImage);
             // TODO: download into temporary file to handle errors on the file
-            var www = new WWW(ImageUrl);
-            yield return www;
+            var www = UnityWebRequest.Get(ImageUrl);
+            yield return www.SendWebRequest();
             if (string.IsNullOrEmpty(www.error) == false)
             { // failed to download
                 Debug.LogError(www.error + " : " + ImageUrl);
@@ -95,7 +96,7 @@ namespace aus.Ui
             }
             try
             {
-                File.WriteAllBytes(localPath, www.bytes);
+                File.WriteAllBytes(localPath, www.downloadHandler.data);
             }
             catch (System.Exception e)
             {
@@ -116,8 +117,8 @@ namespace aus.Ui
         {
             string localPath = localFilePath;
 
-            var www = new WWW("file://" + localPath); // easier way to get source image size
-            yield return www;
+            var www = UnityWebRequestTexture.GetTexture("file://" + localPath); // easier way to get source image size
+            yield return www.SendWebRequest();
             if (string.IsNullOrEmpty(www.error) == false)
             { // failed
                 Debug.LogErrorFormat("error to apply file : {0}", localPath);
@@ -125,7 +126,8 @@ namespace aus.Ui
             }
             else
             {
-                target.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), Vector2.one * 0.5f);
+                var texture = DownloadHandlerTexture.GetContent(www);
+                target.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
                 if (ResizeOption == ResizeOptionEnum.NATIVE_SIZE)
                 {
                     target.SetNativeSize();
