@@ -36,12 +36,13 @@ namespace aus.Property
                 // property 를 그릴 수 없다.
                 drawer.OnGUI(position, property, label);
 
+                position.x += 1;
                 position.y = position.y + position.height - EditorGUIUtility.singleLineHeight;
                 position.height = EditorGUIUtility.singleLineHeight;
                 position.width = EditorGUIUtility.labelWidth;
 
                 GUI.enabled = Application.isPlaying;
-                var btnText = GUI.enabled ? "Test Invoke" : "not playing";
+                var btnText = GUI.enabled ? "Invoke to test" : "NOT playing";
                 if (GUI.Button(position, new GUIContent(btnText)))
                 {
                     // UnityEvent 는 Unity Object 가 아닌 일반 class 라서 property.objectReferenceValue 로
@@ -62,7 +63,7 @@ namespace aus.Property
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, true)
+            return drawer.GetPropertyHeight(property, label)
                 + (IsUnityEvent(property) ? 0 : EditorGUIUtility.singleLineHeight);
         }
 
