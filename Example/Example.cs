@@ -22,6 +22,9 @@ namespace aus.Example
         [ConditionalHide("ShowConditional", true)]
         public int ConditionalValue;
 
+        [InspectorInvokable]
+        public UnityEngine.Events.UnityEvent SomeEvent;
+
         [Header("ETC")]
         [ReadOnly]
         public string TestMD5 = Hash.Md5("Test");
