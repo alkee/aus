@@ -20,18 +20,14 @@ namespace aus.Property
         //The name of the bool field that will be in control
         public string ConditionalSourceField = "";
         //TRUE = Hide in inspector / FALSE = Disable in inspector 
-        public bool HideInInspector = false;
+        public bool HideInInspector;
+        public bool Reversed;
 
-        public ConditionalHideAttribute(string conditionalSourceField)
+        public ConditionalHideAttribute(string conditionalSourceField, bool reversed = false, bool hideThanDisable = false)
         {
             ConditionalSourceField = conditionalSourceField;
-            HideInInspector = false;
-        }
-
-        public ConditionalHideAttribute(string conditionalSourceField, bool hideInInspector)
-        {
-            ConditionalSourceField = conditionalSourceField;
-            HideInInspector = hideInInspector;
+            Reversed = reversed;
+            HideInInspector = hideThanDisable;
         }
     }
 
@@ -44,6 +40,7 @@ namespace aus.Property
         {
             ConditionalHideAttribute condHAtt = (ConditionalHideAttribute)attribute;
             bool enabled = GetConditionalHideAttributeResult(condHAtt, property);
+            if (condHAtt.Reversed) enabled = !enabled;
 
             bool wasEnabled = GUI.enabled;
             GUI.enabled = enabled;
@@ -59,6 +56,7 @@ namespace aus.Property
         {
             ConditionalHideAttribute condHAtt = (ConditionalHideAttribute)attribute;
             bool enabled = GetConditionalHideAttributeResult(condHAtt, property);
+            if (condHAtt.Reversed) enabled = !enabled;
 
             if (!condHAtt.HideInInspector || enabled)
             {
