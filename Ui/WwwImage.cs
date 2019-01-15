@@ -87,7 +87,11 @@ namespace aus.Ui
             ApplyTexture(LoadingImage);
             // TODO: download into temporary file to handle errors on the file
             var www = UnityWebRequest.Get(ImageUrl);
+#if UNITY_2017_2_OR_NEWER
             yield return www.SendWebRequest();
+#else
+            yield return www.Send();
+#endif
             if (string.IsNullOrEmpty(www.error) == false)
             { // failed to download
                 Debug.LogError(www.error + " : " + ImageUrl);
@@ -117,8 +121,13 @@ namespace aus.Ui
         {
             string localPath = localFilePath;
 
+#if UNITY_2017_2_OR_NEWER
             var www = UnityWebRequestTexture.GetTexture("file://" + localPath); // easier way to get source image size
             yield return www.SendWebRequest();
+#else
+            var www = UnityWebRequest.Get("file://" + localPath);
+            yield return www.Send();
+#endif
             if (string.IsNullOrEmpty(www.error) == false)
             { // failed
                 Debug.LogErrorFormat("error to apply file : {0}", localPath);
