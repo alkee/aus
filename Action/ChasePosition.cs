@@ -36,7 +36,7 @@ namespace aus.Action
 
         void Update()
         { // rigid body 를 이용하지 않는 경우
-            if (ChasingTarget == null || rb != null) return;
+            if (ChasingTarget == null || (rb != null && rb.isKinematic == false)) return;
             if (IsInStopDistance()) return;
 
             var direction = GetNormalizedTargetDirection();
@@ -47,11 +47,12 @@ namespace aus.Action
 
         void FixedUpdate()
         { // rigid body 를 이용하는 경우
-            if (ChasingTarget == null || rb == null) return;
+            if (ChasingTarget == null || rb == null || rb.isKinematic) return;
             if (IsInStopDistance()) return;
 
             var direction = GetNormalizedTargetDirection();
 
+            // TODO: 속도가 바로 줄지 않기 때문에 IsInStopDistance 보다 이른 시간에 멈춰야 할텐데..
             // same as rb.velocity = direction * ChasingSpeed;
             // but AddForce makes boundary force on collision
             rb.AddForce(direction * ChasingSpeed - rb.velocity, ForceMode.VelocityChange);
