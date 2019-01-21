@@ -23,7 +23,7 @@ namespace aus.Property
         public bool HideInInspector;
         public bool Reversed;
 
-        public ConditionalHideAttribute(string conditionalSourceField, bool reversed = false, bool hideThanDisable = false)
+        public ConditionalHideAttribute(string conditionalSourceField, bool hideThanDisable = false, bool reversed = false)
         {
             ConditionalSourceField = conditionalSourceField;
             Reversed = reversed;
