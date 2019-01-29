@@ -8,6 +8,11 @@ namespace aus.Example
 {
     public class Example : Singleton<Example>
     {
+        [Header("References from scene")]
+        public GameObject SampleTarget1;
+        public Text InitEventTriggerOutput;
+
+        [Space(20, order = -20)]
         [Header("Simple property and attributes")]
         [MinMaxRange(1, 10, true)]
         public MinMaxRange MinMaxRangeValue;
@@ -16,11 +21,6 @@ namespace aus.Example
         [Tooltip("You cannot modify this value while running by inspector")]
         public float RuntimeReadonly = 1.0f;
         public XyzBool XyzBoolean = new XyzBool { X = false, Y = true, Z = false };
-
-        [Header("ConditionalHide attribute")]
-        public bool ShowConditional;
-        [ConditionalHide("ShowConditional", true)]
-        public int ConditionalValue;
 
         [InspectorInvokable]
         public UnityEngine.Events.UnityEvent SomeEvent;
@@ -31,10 +31,14 @@ namespace aus.Example
         [ReadOnly]
         public string TestSHA1 = Hash.Sha1("Test");
 
-        [Space(10)]
-        [Header("References from scene")]
-        public GameObject SampleTarget1;
-        public Text InitEventTriggerOutput;
+        [Header("ConditionalHide attribute")]
+        public bool ShowConditional;
+        [ConditionalHide("ShowConditional", true)]
+        public int ConditionalValue;
+
+        [Header("Reorderable lists")]
+        public GameObjects GameObjects;
+        public Transforms Transforms;
 
         public void InitEventTriggerAwake(string value)
         {
