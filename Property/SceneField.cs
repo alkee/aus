@@ -18,6 +18,9 @@ namespace aus.Property
         [SerializeField]
         private string m_SceneName = "";
 
+        /// <summary>
+        /// implicit operator string 이 있어 직접 이 멤버에 접근할 필요는 없을 것
+        /// </summary>
         public string SceneName
         {
             get
@@ -38,32 +41,25 @@ namespace aus.Property
     [CustomPropertyDrawer(typeof(SceneField))]
     public class SceneFieldPropertyDrawer : PropertyDrawer
     {
-        public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label)
+        public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
-            if (extend) _position.height /= (1 + ERROR_BOX_HEIGHT_RATIO);
-
-            EditorGUI.BeginProperty(_position, GUIContent.none, _property);
-            SerializedProperty sceneAsset = _property.FindPropertyRelative("m_SceneAsset");
-            SerializedProperty sceneName = _property.FindPropertyRelative("m_SceneName");
-            _position = EditorGUI.PrefixLabel(_position, GUIUtility.GetControlID(FocusType.Passive), _label);
+            rect.height = base.GetPropertyHeight(property, label);
+            EditorGUI.BeginProperty(rect, GUIContent.none, property);
+            SerializedProperty sceneAsset = property.FindPropertyRelative("m_SceneAsset");
+            SerializedProperty sceneName = property.FindPropertyRelative("m_SceneName");
+            rect = EditorGUI.PrefixLabel(rect, GUIUtility.GetControlID(FocusType.Passive), label);
             if (sceneAsset != null)
             {
-                sceneAsset.objectReferenceValue = EditorGUI.ObjectField(_position, sceneAsset.objectReferenceValue, typeof(SceneAsset), false);
+                sceneAsset.objectReferenceValue = EditorGUI.ObjectField(rect, sceneAsset.objectReferenceValue, typeof(SceneAsset), false);
                 if (sceneAsset.objectReferenceValue != null)
                 {
                     sceneName.stringValue = (sceneAsset.objectReferenceValue as SceneAsset).name;
-                    var path = AssetDatabase.GetAssetPath(sceneAsset.objectReferenceValue);
-                    if (EditorBuildSettings.scenes.Any(x => x.path == path) == false)
-                    { // not in the build settins
-                        extend = true;
-                        _position.y += _position.height;
-                        _position.xMax -= 18; // select icon
-                        _position.height *= ERROR_BOX_HEIGHT_RATIO;
-                        EditorGUI.HelpBox(_position, "this scene is not in the build-list", MessageType.Error);
-                    }
-                    else
+                    if (IsInvalidScene(property)==false)
                     {
-                        extend = false;
+                        rect.y += base.GetPropertyHeight(property, label);
+                        rect.xMax -= 18; // select icon 영역
+                        rect.height *= ERROR_BOX_HEIGHT_RATIO;
+                        EditorGUI.HelpBox(rect, "this scene is not in the build-list", MessageType.Error);
                     }
                 }
             }
@@ -72,16 +68,23 @@ namespace aus.Property
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var defualtHeight = base.GetPropertyHeight(property, label);
+            var defaultHeight = base.GetPropertyHeight(property, label);
 
-            // TODO: extend 변경(OnGUI)보다 GetPropertyHeight 호출이 빨라 ERROR_BOX 가 나타나더라도 일정시간 defaultHeight 으로 높이가 설정되는 문제 수정
-            if (extend == false) return defualtHeight;
+            if (IsInvalidScene(property)) return defaultHeight;
 
-            return defualtHeight * (1 + ERROR_BOX_HEIGHT_RATIO);
+            return defaultHeight * (1 + ERROR_BOX_HEIGHT_RATIO);
         }
 
-        private const float ERROR_BOX_HEIGHT_RATIO = 1.5f;
-        private bool extend;
+        private bool IsInvalidScene(SerializedProperty property)
+        {
+            SerializedProperty sceneAsset = property.FindPropertyRelative("m_SceneAsset");
+            if (sceneAsset == null || sceneAsset.objectReferenceValue == null) return false;
+
+            var path = AssetDatabase.GetAssetPath(sceneAsset.objectReferenceValue);
+            return (EditorBuildSettings.scenes.Any(x => x.path == path) == false);
+        }
+
+        private const float ERROR_BOX_HEIGHT_RATIO = 2.0f; // 좁은 inspector 영역에서도 두줄로 메시지를 잘 보이게 하기위해
 
     }
 
