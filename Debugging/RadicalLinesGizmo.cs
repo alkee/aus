@@ -8,7 +8,8 @@ namespace aus.Debugging
     public class RadicalLinesGizmo : MonoBehaviour
     {
         public Vector3 LocalCenterPos;
-        public Vector3[] Directions;
+        [Tooltip("개수 만큼 중심점에서 방사형으로 선을 그린다")]
+        public Property.Vector3s LineDirs;
 
         private Renderer r;
         private float size;
@@ -26,7 +27,7 @@ namespace aus.Debugging
         {
             r = GetComponent<Renderer>();
             if (r == null) r = GetComponentInChildren<Renderer>();
-            if (Directions == null || Directions.Length == 0) enabled = false;
+            if (LineDirs == null || LineDirs.members.Count == 0) enabled = false;
 
             size = r.bounds.extents.magnitude;
         }
@@ -36,7 +37,7 @@ namespace aus.Debugging
             if (enabled == false) return;
 
             var index = 0;
-            foreach (var n in Directions)
+            foreach (var n in LineDirs.members)
             {
                 Gizmos.color = GetColor(index);
                 Gizmos.DrawRay(transform.position + LocalCenterPos, n * size);
