@@ -19,7 +19,7 @@ namespace aus
                 yield return null;
             }
             frame(to);
-            end?.Invoke();
+            if (end != null) end.Invoke();
         }
 
         public static IEnumerator Lerp(float from, float to, float duration, Action<float> frame, System.Action end = null)
@@ -33,7 +33,7 @@ namespace aus
                 yield return null;
             }
             frame(to);
-            end?.Invoke();
+            if (end != null) end.Invoke();
         }
 
         public static IEnumerator Lerp(Vector3 from, Vector3 to, float duration, Action<Vector3> frame, System.Action end = null)
@@ -47,7 +47,7 @@ namespace aus
                 yield return null;
             }
             frame(to);
-            end?.Invoke();
+            if (end != null) end.Invoke();
         }
 
         public static IEnumerator Lerp(Quaternion from, Quaternion to, float duration, Action<Quaternion> frame, System.Action end = null)
@@ -61,7 +61,7 @@ namespace aus
                 yield return null;
             }
             frame(to);
-            end?.Invoke();
+            if (end != null) end.Invoke();
         }
 
         public static IEnumerator WaitAndRun(float duration, Func<IEnumerator> frame)

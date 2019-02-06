@@ -58,7 +58,7 @@ namespace aus.Property
             }
             else if (info.MemberType == MemberTypes.Property)
             {
-                (info as PropertyInfo).SetValue(Component, val);
+                (info as PropertyInfo).SetValue(Component, val, null);
             }
         }
     }
