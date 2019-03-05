@@ -31,7 +31,8 @@ namespace aus.Example
         [ReadOnly]
         public string TestSHA1 = Hash.Sha1("Test");
 
-        [Header("ConditionalHide attribute")]
+        [HelpBox("This message comes from HelpBoxAttribute", HelpBoxAttribute.IconType.WARNING)]
+        [Header("ConditionalHide attribute", order = 1)] // using 'order' to draw after HelpBox 
         public bool ShowConditional;
         [ConditionalHide("ShowConditional", true)]
         public int ConditionalValue;
