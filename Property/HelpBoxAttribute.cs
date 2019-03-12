@@ -1,10 +1,7 @@
 ﻿// https://bitbucket.org/alkee/aus
 
-using System;
 using UnityEngine;
 #if UNITY_EDITOR
-using System.Linq;
-using System.Collections;
 using UnityEditor;
 #endif
 

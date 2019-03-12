@@ -6,13 +6,19 @@ using UnityEngine.Events;
 namespace aus.Event
 {
     // *CAUSION* this may not work if the target UnityEvent is changed somewhere else
-    public class FirstUnityEventDetector : MonoBehaviour
+    public class OnlyOnceTrigger : MonoBehaviour
     {
         [Property.PropertyOrField(typeof(UnityEvent))]
         public Property.ComponentMemberField TargetField;
         public UnityEvent OnFirstInvoke;
 
-        void Start()
+        private UnityEvent target;
+
+        private void Start()
+        {
+        }
+
+        private void OnEnable()
         {
             if (TargetField != null)
             {
@@ -24,10 +30,10 @@ namespace aus.Event
             }
         }
 
-        private UnityEvent target;
         private void OnInvoke()
         {
             target.RemoveListener(OnInvoke);
+            TargetField = null; // no more use
             OnFirstInvoke.Invoke();
         }
     }
