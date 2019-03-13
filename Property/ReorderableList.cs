@@ -63,7 +63,6 @@ namespace aus.Property
             Debug.Assert(members != null, "list member should have [Serializable] attribute");
 
             if (list == null) list = BuildList(property.name, members);
-            members.serializedObject.Update();
             list.DoList(position);
             members.serializedObject.ApplyModifiedProperties();
             EditorGUI.EndProperty();
@@ -95,6 +94,10 @@ namespace aus.Property
             {
                 return EditorGUI.GetPropertyHeight(members.GetArrayElementAtIndex(i));
             };
+
+            // 이유는 모르겠으나... Unity5.6 에서 members.serializedObject.Update 가 
+            //    OnGUI 에 있으면 다른 sibling member 들의 값 변경을 방해한다.
+            members.serializedObject.Update();
             return list;
         }
 
