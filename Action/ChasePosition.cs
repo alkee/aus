@@ -7,19 +7,24 @@ namespace aus.Action
 {
     public class ChasePosition : MonoBehaviour
     {
-        public Transform ChasingTarget;
-        public float ChasingSpeed = 1;
+        [SerializeField]
+        private Transform chasingTarget;
+        public Transform ChasingTarget { get { return chasingTarget; } set { chasingTarget = value; } }
+        [SerializeField]
+        private float chasingSpeed = 1;
+        public float ChasingSpeed { get { return chasingSpeed; } set { chasingSpeed = value; } }
+
         [Tooltip("이 거리보다 먼 경우에만 chasing")]
-        public float StopDistance = 0.5f; // TODO: editor 에서 stop distance gizmo 표시
+        [SerializeField]
+        private float stopDistance = 0.5f; // TODO: editor 에서 stop distance gizmo 표시
+        public float StopDistance { get { return stopDistance; } set { stopDistance = value; } }
+
+        // XyzBool type 은 property 를 제공하더라도 UnityEvent inspector 에서 보여지지 않으므로 단순 public 변수로
         public Property.XyzBool FreezeAxis = new Property.XyzBool { Y = true };
+
         [Header("Events")]
         public UnityEvent OnDeparture;
         public UnityEvent OnArrival;
-
-        public void ChangeChasingTarget(Transform target)
-        {
-            ChasingTarget = target;
-        }
 
         void Start()
         {
