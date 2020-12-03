@@ -22,6 +22,8 @@ namespace aus.Action
          * 1) adding an isColliding bool to allow camera to collide with world objects, terrain etc.
          */
 
+        [Tooltip("use size than position for orthogonal camera")]
+        public bool cameraDetection = true;
         public float mouseSensitivity = 2.5f; // Mouse rotation sensitivity.
         public float mainSpeed = 10.0f; // regular speed
         [Range(0.0f, 1.0f)]
@@ -37,12 +39,15 @@ namespace aus.Action
         public KeyCode StepRight = KeyCode.D;
 
 
+        private Camera cam;
+
         // physics and camera scpecific parts are removed
         // because it's more simple and independent.
         // if you want some like physics, you may add other components for it.
 
         void Start()
         {
+            cam = GetComponent<Camera>();
         }
 
         void Update()
@@ -92,6 +97,28 @@ namespace aus.Action
             var p = GetBaseInput();
             var dp = p * Time.deltaTime * mainSpeed;
             transform.Translate(dp);
+
+            // orthographic camera 를 사용하는 경우, 이동으로는 거리를 맞출 수 없다.
+            if (IsOrthogonalCamera)
+            {
+                if (Input.GetKey(MoveFoward))
+                {
+                    cam.orthographicSize *= 0.98f;
+                }
+                else if (Input.GetKey(MoveBackward))
+                {
+                    cam.orthographicSize *= 1.02f;
+                }
+            }
+        }
+
+        private bool IsOrthogonalCamera
+        {
+            get
+            {
+                if (cameraDetection == false) return false;
+                return cam != null && cam.orthographic;
+            }
         }
 
         private bool isRotating = false; // Angryboy: Can be called by other things (e.g. UI) to see if camera is rotating
@@ -101,12 +128,11 @@ namespace aus.Action
         private Vector3 GetBaseInput()
         { //returns the basic values, if it's 0 than it's not active.
             Vector3 p_Velocity = new Vector3();
-            // TODO: remove hardcoded keycode
-            if (Input.GetKey(MoveFoward))
+            if (Input.GetKey(MoveFoward) && IsOrthogonalCamera == false)
             {
                 p_Velocity += new Vector3(0, 0, 1);
             }
-            if (Input.GetKey(MoveBackward))
+            if (Input.GetKey(MoveBackward) && IsOrthogonalCamera == false)
             {
                 p_Velocity += new Vector3(0, 0, -1);
             }
