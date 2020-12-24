@@ -24,13 +24,14 @@ namespace aus.Ui
         private void Start()
         {
             if (Source == null || Source.IsValid() == false) return;
-            SetText(Source.GetValue()?.ToString());
+            var val = Source.GetValue() == null ? null : Source.GetValue().ToString();
+            SetText(val);
         }
 
         void Update()
         {
             if (Source == null || Source.IsValid() == false) return;
-            var val = Source.GetValue()?.ToString();
+            var val = Source.GetValue() == null ? null : Source.GetValue().ToString();
             if (lastText == val) return;
             SetText(val);
         }
