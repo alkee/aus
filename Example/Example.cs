@@ -54,11 +54,11 @@ namespace aus.Example
         void Awake()
         {
             this.Should().NotHaveNullMemberFields();
+            var singleton = SingletonSample.Instance; // singleton test
         }
 
         void Start()
         {
-
             #region RollbackTransform
             var p = transform.position;
             var r = transform.rotation;
@@ -87,6 +87,10 @@ namespace aus.Example
                     }));
                 }));
             #endregion
+        }
+
+        private class SingletonSample : Singleton<SingletonSample>
+        {
         }
     }
 }

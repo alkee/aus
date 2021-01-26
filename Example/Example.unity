@@ -1557,7 +1557,7 @@ Transform:
   m_Children:
   - {fileID: 259018758}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558630619
 GameObject:
@@ -2635,7 +2635,7 @@ Transform:
   m_Children:
   - {fileID: 158050481}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1278174857
 GameObject:
@@ -2839,7 +2839,7 @@ Transform:
   m_Children:
   - {fileID: 368085119}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1347728213
 GameObject:
@@ -3760,7 +3760,7 @@ Transform:
   - {fileID: 1881847979}
   - {fileID: 1681776991}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1681776988
 GameObject:
@@ -3907,6 +3907,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687414561}
   m_CullTransparentMesh: 0
+--- !u!1 &1845822850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1845822853}
+  - component: {fileID: 1845822852}
+  - component: {fileID: 1845822851}
+  m_Layer: 0
+  m_Name: Example duplicated
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1845822851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845822850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e109735f58946e4ab080d9210d2c1fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SampleTarget1: {fileID: 158050480}
+  InitEventTriggerOutput: {fileID: 1534098956}
+  MinMaxRangeValue:
+    rangeStart: 1.2368422
+    rangeEnd: 3.3092113
+  SelectedScene:
+    m_SceneAsset: {fileID: 102900000, guid: 30e9b25621fbc4b4fb46bb6c0f42b9df, type: 3}
+    m_SceneName: Example
+  RuntimeReadonly: 1
+  XyzBoolean:
+    X: 0
+    Y: 1
+    Z: 0
+  SomeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1845822851}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: set_name
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Tested Example
+          m_BoolArgument: 0
+        m_CallState: 2
+  TestMD5: 0cbc6611f5540bd0809a388dc95a615b
+  TestSHA1: 640ab2bae07bedc4c163f679a746f7ab7fb5d1fa
+  ShowConditional: 1
+  ConditionalValue: 0
+  GameObjects:
+    members: []
+  Transforms:
+    members: []
+--- !u!114 &1845822852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845822850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b3c7e52188b0a419e9c34150c22d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _: this is just a comment for this game object.
+--- !u!4 &1845822853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845822850}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1881847975
 GameObject:
   m_ObjectHideFlags: 0
@@ -4117,7 +4210,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1988560971
 GameObject:
@@ -4206,7 +4299,7 @@ MonoBehaviour:
         m_MethodName: LookAt
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 259018758}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
