@@ -1,6 +1,7 @@
 ﻿// https://bitbucket.org/alkee/aus
 
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace aus
 {
@@ -49,16 +50,29 @@ namespace aus
             }
         }
 
+        public UnityEvent onInit;
+        public UnityEvent onQuit;
+
+        private void Awake()
+        {
+            if (Instance == this)
+            {
+                Debug.Log($"Singleton {typeof(T)} initialized in {name}");
+                onInit.Invoke();
+                return;
+            }
+            Destroy(gameObject);
+            Debug.Log($"Singleton {typeof(T)} is duplicated in hierarchy. destroying {name}");
+        }
+
         void OnDestroy()
         {
             var cnt = FindObjectsOfType<T>(true).Length;
             if (cnt == 1) // last one
             {
-                OnQuit();
+                onQuit.Invoke();
                 _instance = null;
             }
         }
-
-        protected virtual void OnQuit() { }
     }
 }
