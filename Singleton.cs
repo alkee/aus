@@ -50,15 +50,12 @@ namespace aus
             }
         }
 
-        public UnityEvent onInit;
-        public UnityEvent onQuit;
-
         private void Awake()
         {
             if (Instance == this)
             {
                 Debug.Log($"Singleton {typeof(T)} initialized in {name}");
-                onInit.Invoke();
+                OnInit();
                 return;
             }
             Destroy(gameObject);
@@ -70,9 +67,12 @@ namespace aus
             var cnt = FindObjectsOfType<T>(true).Length;
             if (cnt == 1) // last one
             {
-                onQuit.Invoke();
+                OnQuit();
                 _instance = null;
             }
         }
+
+        protected virtual void OnInit() { }
+        protected virtual void OnQuit() { }
     }
 }
