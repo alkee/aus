@@ -1,7 +1,6 @@
 ﻿// https://bitbucket.org/alkee/aus
 
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace aus
 {
@@ -9,6 +8,9 @@ namespace aus
     public abstract class Singleton<T>
     : MonoBehaviour where T : MonoBehaviour
     {
+        [Property.HelpBox("This object is a SINGLETON.")]
+        [Property.ReadOnly]
+        public bool isValidInstance = false;
 
         private static T _instance = null;
         private static object guard = new object();
@@ -54,6 +56,7 @@ namespace aus
         {
             if (Instance == this)
             {
+                isValidInstance = true;
                 Debug.Log($"Singleton {typeof(T)} initialized in {name}");
                 OnInit();
                 return;
