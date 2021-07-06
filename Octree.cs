@@ -10,6 +10,7 @@ namespace aus
     public class Octree<T>
     {
         public int Count { get; private set; }
+        public Bounds Bounds { get => rootNode.Bounds; }
 
         private OctreeNode<T> rootNode;
         private readonly float minSize;
@@ -40,7 +41,7 @@ namespace aus
             Count++;
         }
 
-        public List<T> GetPointIndicesIn(Vector3 pos, float radius)
+        public List<T> GetNearBy(Vector3 pos, float radius)
         {
             var results = new List<T>();
             rootNode.GetNearBy(pos, radius * radius, results);
@@ -112,11 +113,12 @@ namespace aus
         public void GetNearBy(Vector3 pos, float sqrDistance, List<T> outResult)
         {
             if (Count == 0) return; // no points in here
-            if ((Bounds.ClosestPoint(pos) - pos).sqrMagnitude > sqrDistance) return; // not interested
+            if ((Bounds.ClosestPoint(pos) - pos).sqrMagnitude > sqrDistance) return; // not interested(out of range)
 
             if (children != null) // this is not a leaf
             {
-                foreach (var child in children) child.GetNearBy(pos, sqrDistance, outResult); // recursive call to children
+                foreach (var child in children)
+                    child.GetNearBy(pos, sqrDistance, outResult); // recursive call to children
                 return;
             }
 

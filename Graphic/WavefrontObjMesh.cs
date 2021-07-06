@@ -98,8 +98,10 @@ namespace aus.Graphic
         private void Awake()
         {
             if (!diffuseShader)
-            {
-                diffuseShader = Shader.Find("Standard"); // initializer 에서 Shader.Find 를 사용할 수 없다.
+            { // initializer 에서 Shader.Find 를 사용할 수 없다.
+                // 참조가 없어 shader 가 resource 에 포함되지 않을 경우 build 된 실행환경에서 오류발생한다.
+                // project 기본설정으로 포함되어있는 shader (Project settings > Graphics > Always Included Shaders
+                diffuseShader = Shader.Find("Legacy Shaders/Diffuse");
                 Debug.Assert(diffuseShader);
             }
         }
