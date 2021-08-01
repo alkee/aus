@@ -48,6 +48,20 @@ namespace aus
             return results;
         }
 
+        public List<T> GetNearBy(Ray ray, float distance)
+        {
+            var results = new List<T>();
+
+            // https://github.com/Nition/UnityOctree/blob/bbc473571c8a0879024077a928ca658a52ecbd99/Scripts/PointOctreeNode.cs#L124
+            // ray to bounds
+            var rayBounds = new Bounds(ray.origin + (ray.direction * 0.5f)
+                , new Vector3(Mathf.Abs(ray.direction.x), Mathf.Abs(ray.direction.y), Mathf.Abs(ray.direction.z)));
+            rayBounds.Expand(distance * 2); // effective area by distance
+
+            rootNode.GetNearBy(ref rayBounds, ref ray, distance * distance, results);
+            return results;
+        }
+
         private void Grow(Vector3 direction)
         {
             var xDirection = direction.x >= 0 ? 1 : -1;
@@ -125,7 +139,31 @@ namespace aus
             // this is a leaf node
             foreach (var elem in objects)
             {
-                if ((pos - elem.Pos).sqrMagnitude < sqrDistance)
+                if ((pos - elem.Pos).sqrMagnitude <= sqrDistance)
+                {
+                    outResult.Add(elem.Obj);
+                }
+            }
+        }
+
+        public void GetNearBy(ref Bounds effectiveArea, ref Ray ray, float sqrMagnitude, List<T> outResult)
+        {
+            if (Count == 0) return; // no points in here
+            if (effectiveArea.Intersects(Bounds) == false) return; // no interaction with the ray bounds
+
+            if (children != null) // this is not a leaf
+            {
+                foreach (var child in children)
+                    child.GetNearBy(ref effectiveArea, ref ray, sqrMagnitude, outResult); // recursive call to children
+                return;
+            }
+
+            // this is a leaf node
+            foreach (var elem in objects)
+            {
+                var sqrDistanceFromRay = Vector3.Cross(ray.direction, elem.Pos - ray.origin).sqrMagnitude;
+
+                if (sqrDistanceFromRay <= sqrMagnitude)
                 {
                     outResult.Add(elem.Obj);
                 }
