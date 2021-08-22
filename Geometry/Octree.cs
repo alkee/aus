@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace aus
+namespace aus.Geometry
 {
     // ref: https://github.com/Nition/UnityOctree
 

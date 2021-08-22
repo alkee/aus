@@ -7,20 +7,13 @@ namespace aus.Event
         [Tooltip("true 이면 모든 직접적인 자식(자손 제외)만 강제 disable. false 이면 enable")]
         public bool DisableAllChildren;
 
-        void Awake()
+        private void Start()
         {
-            if (enabled)
+            foreach (Transform t in transform)
             {
-                foreach (Transform t in transform)
-                {
-                    t.gameObject.SetActive(!DisableAllChildren);
-                }
-                enabled = false;
+                t.gameObject.SetActive(!DisableAllChildren);
             }
-        }
-
-        void Update()
-        { // component enable check 표시하기위해 빈 Update 라도 필요.
+            enabled = false;
         }
     }
 }

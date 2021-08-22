@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 using aus.Debugging;
 using aus.Property;
+using aus.Extension;
 
 namespace aus.Example
 {
@@ -27,9 +28,9 @@ namespace aus.Example
 
         [Header("ETC")]
         [ReadOnly]
-        public string TestMD5 = Hash.Md5("Test");
+        public string TestMD5 = "Test".Md5();
         [ReadOnly]
-        public string TestSHA1 = Hash.Sha1("Test");
+        public string TestSHA1 = "Test".Sha1();
 
         [HelpBox("This message comes from HelpBoxAttribute", HelpBoxAttribute.IconType.WARNING)]
         [Header("ConditionalHide attribute", order = 1)] // using 'order' to draw after HelpBox 

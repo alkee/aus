@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
-namespace aus.Graphic
+namespace aus.Geometry
 {
     public class WavefrontObjMesh
         : MonoBehaviour
@@ -22,7 +23,14 @@ namespace aus.Graphic
         [SerializeField]
         private Shader diffuseShader;
 
+        [Header("Event")]
+        public UnityEvent<WavefrontObjMesh> onLoad;
+
         public string SourceFilePath { get; private set; }
+        public MeshFilter GetMeshFilter()
+        {
+            return GetComponentInChildren<MeshFilter>();
+        }
 
         public void Clear()
         {
@@ -50,6 +58,7 @@ namespace aus.Graphic
             // TODO: group mesh/sub mesh 지원
             var go = CreateMeshObject(objFile, defaultMaterial, transform, flipXcoordination);
             if (go) SourceFilePath = sourceFilePath;
+            onLoad?.Invoke(this);
             return new GameObject[] { go };
         }
 

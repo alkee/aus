@@ -64,6 +64,7 @@ namespace aus.InterScene
         // just to use 'enabled' in inspector
         void Start()
         {
+            Debug.Assert(DependentScene != null);
         }
     }
 }

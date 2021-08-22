@@ -32,10 +32,10 @@ namespace aus.Event
             if (Collider == null) Collider = GetComponent<Collider>();
         }
 
-        private void OnValidate()
-        {
-            // collider/target validation (trigger or collision)
-        }
+        //private void OnValidate()
+        //{
+        //    // collider/target validation (trigger or collision)
+        //}
 
         private void OnTriggerEnter(Collider other)
         {

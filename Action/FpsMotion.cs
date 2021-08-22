@@ -25,14 +25,14 @@ namespace aus.Action
         [Tooltip("use size than position for orthogonal camera")]
         public bool cameraDetection = true;
         public float mouseSensitivity = 2.5f; // Mouse rotation sensitivity.
-        public float mainSpeed = 10.0f; // regular speed
+        public float mainSpeed = 4.0f; // regular speed
         [Range(0.0f, 1.0f)]
         public float preciseRate = 0.2f; // to make precise speed
 
         [Header("Key bindings")]
         public KeyCode Precise = KeyCode.LeftShift;
-        public KeyCode MoveUp = KeyCode.Space;
-        public KeyCode MoveDown = KeyCode.LeftControl;
+        public KeyCode MoveUp = KeyCode.E;
+        public KeyCode MoveDown = KeyCode.Q;
         public KeyCode MoveFoward = KeyCode.W;
         public KeyCode MoveBackward = KeyCode.S;
         public KeyCode StepLeft = KeyCode.A;

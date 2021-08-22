@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace aus.Graphic
+namespace aus.Geometry
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     [DisallowMultipleComponent]

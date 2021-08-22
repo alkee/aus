@@ -16,6 +16,7 @@ namespace aus.Event
 
         private void Start()
         {
+            Debug.Assert(TargetField != null);
         }
 
         private void OnEnable()

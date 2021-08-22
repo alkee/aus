@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// https://bitbucket.org/alkee/aus
+
+using aus.Extension;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -158,7 +161,7 @@ namespace aus.Ui
 
         private void SetLocalPath(string url)
         {
-            localFilePath = Path.Combine(Application.persistentDataPath, Hash.Sha1(url.Trim()));
+            localFilePath = Path.Combine(Application.persistentDataPath, url.Trim().Sha1());
         }
     }
 }

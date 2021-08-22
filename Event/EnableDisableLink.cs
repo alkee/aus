@@ -11,10 +11,6 @@ namespace aus.Event
         [Tooltip("True 이면 Enable 될때 함께 Target 을 Enable 시키고 그렇지 않으면 반대")]
         public bool Reversed = false;
 
-        void Awake()
-        {
-        }
-
         void OnEnable()
         {
             if (LinkTarget != null) LinkTarget.SetActive(!Reversed);

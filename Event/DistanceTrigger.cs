@@ -29,10 +29,6 @@ namespace aus.Event
             Target = target;
         }
 
-        void Start()
-        {
-        }
-
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {

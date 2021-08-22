@@ -15,17 +15,10 @@ namespace aus.Event
         public List<GameObject> EnableTargets = new List<GameObject>();
         public List<GameObject> DisableTargets = new List<GameObject>();
 
-        void Awake()
+        void Start()
         {
-            if (enabled) // component 가 editor 에 의해 disabled 되어있어도 gameobject 가 enable 되어있으면 Awake 는 항상 호출된다
-            {
-                SetActive(EnableTargets, true);
-                SetActive(DisableTargets, false);
-            }
-        }
-
-        void Update()
-        { // Update/FixedUpdate 가 없으면 component enable/disable checkbox 가 editor 에 나타나지 않는다.
+            SetActive(EnableTargets, true);
+            SetActive(DisableTargets, false);
         }
 
         private void SetActive(List<GameObject> targets, bool value)
