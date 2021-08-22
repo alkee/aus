@@ -60,20 +60,20 @@ namespace aus.Geometry
         public static readonly Color[] DEFAULT_COLOR_SCALE = new Color[] { Color.blue, Color.green, Color.yellow, Color.red };
         public static readonly Color DEFAULT_NAN_COLOR = Color.black;
 
-        public Color[] CreateColors(Color NaNcolor, params Color[] colorscale)
+        public Color[] CreateColors(Color NaNcolor, params Color[] colorscales)
         {
-            if (colorscale == null || colorscale.Length == 0) new ArgumentNullException(nameof(colorscale));
-            if (colorscale.Length == 1)
+            if (colorscales == null || colorscales.Length == 0) new ArgumentNullException(nameof(colorscales));
+            if (colorscales.Length == 1)
             {
                 var ret = new Color[Values.Length];
-                ret.Fill(colorscale[0], 0, ret.Length);
+                ret.Fill(colorscales[0], 0, ret.Length);
                 return ret;
             }
 
-            var interval = 1.0f / (colorscale.Length - 1);
+            var interval = 1.0f / (colorscales.Length - 1);
             var colors = new List<GradientColorKey>();
             var time = 0.0f;
-            foreach (var c in colorscale)
+            foreach (var c in colorscales)
             {
                 colors.Add(new GradientColorKey { color = c, time = time });
                 time += interval;

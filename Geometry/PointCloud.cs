@@ -18,15 +18,28 @@ namespace aus.Geometry
         private readonly Octree<int/*point index*/> octree;
 
         public PointCloud(Mesh src)
+            : this(src.vertices, src.normals, src.bounds)
         {
-            Points = src.vertices;
-            Count = Points.Length;
-            Normals = src.normals;
-            Bounds = src.bounds;
+        }
+
+        public PointCloud(Vector3[] points, Vector3[] normals, Bounds? bounds = null)
+        {
+            Points = points;
+            Count = points.Length;
+            Normals = normals;
             if (Normals != null && Normals.Length != Count)
             {
                 Debug.LogWarning("Pointcloud has invalid normals");
                 Normals = null; // TODO: recalculate normal ?
+            }
+
+            if (bounds.HasValue == false)
+            {
+                Bounds = GeometryUtility.CalculateBounds(points, Matrix4x4.identity);
+            }
+            else
+            {
+                Bounds = bounds.Value;
             }
 
             // octree calculation
@@ -62,6 +75,23 @@ namespace aus.Geometry
         {
             var indices = GetPointIndices(ray, distance);
             return GetPoints(indices);
+        }
+
+        public PointCloud CreateSample(int pointCount, int? randomSeed = null)
+        {
+            if (pointCount > Count) throw new ArgumentException("samples should be lesser than source", nameof(pointCount));
+            var indices = Enumerable.Range(0, Count).ToList();
+            indices.Shuffle(randomSeed);
+
+            var points = new Vector3[pointCount];
+            var normals = Normals == null ? null : new Vector3[pointCount];
+            for (var i = 0; i < pointCount; ++i)
+            {
+                points[i] = Points[indices[i]];
+                if (Normals != null) normals[i] = Normals[indices[i]];
+            }
+
+            return new PointCloud(points, normals);
         }
     }
 }

@@ -206,5 +206,18 @@ namespace aus.Extension
         }
         private static System.Security.Cryptography.SHA1 sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider();
 
+        public static void Shuffle<T>(this IList<T> list, int? seed = null)
+        { // ref: https://stackoverflow.com/questions/273313
+            var rnd = seed.HasValue ? new System.Random(seed.Value) : new System.Random();
+            var n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rnd.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
     }
 }
