@@ -15,7 +15,7 @@ namespace aus.Event
         public List<GameObject> EnableTargets = new List<GameObject>();
         public List<GameObject> DisableTargets = new List<GameObject>();
 
-        void Start()
+        void Awake()
         {
             SetActive(EnableTargets, true);
             SetActive(DisableTargets, false);
