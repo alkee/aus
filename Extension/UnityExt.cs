@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace aus.Extension
@@ -168,7 +167,7 @@ namespace aus.Extension
 
         public static Vector2Int Abs(this Vector2Int v)
         {
-            return new Vector2Int(System.Math.Abs(v.x), System.Math.Abs(v.y));
+            return new Vector2Int(Math.Abs(v.x), Math.Abs(v.y));
         }
 
         public static Vector2 Abs(this Vector2 v)
@@ -179,8 +178,35 @@ namespace aus.Extension
         public static Vector3 GetMeanVector(this IEnumerable<Vector3> points)
         {
             var count = points.Count();
-            if (count == 0) return Vector3.zero;
+            if (count == 0) throw new ArgumentException($"one or more points needed");
             var sum = Vector3.zero;
+            foreach (var p in points) sum += p;
+            return sum / count;
+        }
+
+        public static Vector2 GetMeanVector(this IEnumerable<Vector2> points)
+        {
+            var count = points.Count();
+            if (count == 0) throw new ArgumentException($"one or more points needed");
+            var sum = Vector2.zero;
+            foreach (var p in points) sum += p;
+            return sum / count;
+        }
+
+        public static Vector3Int GetMeanVector(this IEnumerable<Vector3Int> points)
+        {
+            var count = points.Count();
+            if (count == 0) throw new ArgumentException($"one or more points needed");
+            var sum = Vector3Int.zero;
+            foreach (var p in points) sum += p;
+            return sum / count;
+        }
+
+        public static Vector2Int GetMeanVector(this IEnumerable<Vector2Int> points)
+        {
+            var count = points.Count();
+            if (count == 0) throw new ArgumentException($"one or more points needed");
+            var sum = Vector2Int.zero;
             foreach (var p in points) sum += p;
             return sum / count;
         }
@@ -304,7 +330,7 @@ namespace aus.Extension
             var count = 0;
             foreach (Transform t in g.transform)
             {
-                GameObject.Destroy(t.gameObject);
+                UnityEngine.Object.Destroy(t.gameObject);
                 ++count;
             }
             return count;
