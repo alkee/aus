@@ -268,18 +268,23 @@ namespace aus.Extension
             tex.SetPixels32(pixels);
         }
 
-        public static Ray PointToRay(this Texture2D tex, Camera source, Vector2Int pos)
+        public static Ray PointToRay(this Camera cam, int textureWidth, int textureHeight, Vector2Int pos)
         {
-            var normalizedPoint = new Vector2(pos.x / (float)tex.width, pos.y / (float)tex.height);
-            var backup = source.targetTexture;
-            var tmp = RenderTexture.GetTemporary(tex.width, tex.height);
-            using (new Defer(() => { source.targetTexture = backup; RenderTexture.ReleaseTemporary(tmp); }))
+            var normalizedPoint = new Vector2(pos.x / (float)textureWidth, pos.y / (float)textureHeight);
+            var backup = cam.targetTexture;
+            var tmp = RenderTexture.GetTemporary(textureWidth, textureHeight);
+            using (new Defer(() => { cam.targetTexture = backup; RenderTexture.ReleaseTemporary(tmp); }))
             {
                 // targetTexture 를 texture 에 맞게 지정하지 않으면,
                 //   screen ratio 에 따라 살짝 다른 위치(x좌표)의 ray 를 반환한다(#398 ; https://bitbucket.org/alkee_skia/mars-processor/issues/398/nose-detection#comment-60924133)
-                source.targetTexture = tmp;
-                return source.ViewportPointToRay(normalizedPoint);
+                cam.targetTexture = tmp;
+                return cam.ViewportPointToRay(normalizedPoint);
             }
+        }
+
+        public static Ray PointToRay(this Texture2D tex, Camera source, Vector2Int pos)
+        {
+            return PointToRay(source, tex.width, tex.height, pos);
         }
 
         public static Texture2D Rescale(this Texture2D tex, int width, int height)
