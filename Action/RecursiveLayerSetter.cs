@@ -20,7 +20,7 @@ namespace aus.Action
             SetLayerRecursively(transform, layer);
         }
 
-        private void SetLayerRecursively(Transform transform, int layer)
+        public static void SetLayerRecursively(Transform transform, int layer)
         {
             transform.gameObject.layer = layer;
             foreach (Transform t in transform) SetLayerRecursively(t, layer);

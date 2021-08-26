@@ -41,12 +41,42 @@ namespace aus.Geometry
             SourceFilePath = null;
         }
 
-        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, bool flipXcoordination = true)
+        public static GameObject CreateObject(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
+        {
+            if (shader == null) shader = Shader.Find("Legacy Shaders/Diffuse"); // project 기본설정으로 포함되어있는 shader (Project settings > Graphics > Always Included Shaders
+            Debug.Assert(shader);
+            var defaultMaterial = new Material(shader);
+            var objFile = ObjFile.FromFile(sourceFilePath);
+
+            // TODO: group mesh/sub mesh 지원
+            return CreateMeshObject(objFile, defaultMaterial, flipXcoordination);
+        }
+
+        public IEnumerable<GameObject> Load(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
         {
             Clear();
 
             // TODO: objFile.MaterialLibraries support
-            var defaultMaterial = new Material(diffuseShader);
+            var defaultMaterial = new Material(shader ?? diffuseShader);
+            ObjFile objFile = null;
+
+            Debug.Log($"loading mesh from {sourceFilePath}");
+            objFile = ObjFile.FromFile(sourceFilePath);
+
+            // TODO: group mesh/sub mesh 지원
+            var go = CreateMeshObject(objFile, defaultMaterial, flipXcoordination);
+            go.transform.parent = transform;
+            if (go) SourceFilePath = sourceFilePath;
+            onLoad?.Invoke(this);
+            return new GameObject[] { go };
+        }
+
+        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
+        {
+            Clear();
+
+            // TODO: objFile.MaterialLibraries support
+            var defaultMaterial = new Material(shader ?? diffuseShader);
             ObjFile objFile = null;
 
             await Task.Run(() =>
@@ -56,13 +86,14 @@ namespace aus.Geometry
             });
 
             // TODO: group mesh/sub mesh 지원
-            var go = CreateMeshObject(objFile, defaultMaterial, transform, flipXcoordination);
+            var go = CreateMeshObject(objFile, defaultMaterial, flipXcoordination);
+            go.transform.parent = transform;
             if (go) SourceFilePath = sourceFilePath;
             onLoad?.Invoke(this);
             return new GameObject[] { go };
         }
 
-        private static GameObject CreateMeshObject(ObjFile source, Material defaultMaterial, Transform parent, bool flipXcoordination)
+        private static GameObject CreateMeshObject(ObjFile source, Material defaultMaterial, bool flipXcoordination)
         {
             // prepare data
             var dirX = flipXcoordination ? -1 : 1;
@@ -77,7 +108,6 @@ namespace aus.Geometry
             }
 
             var obj = new GameObject("obj mesh");
-            obj.transform.parent = parent;
 
             // mesh filter setup
             var mf = obj.AddComponent<MeshFilter>();
