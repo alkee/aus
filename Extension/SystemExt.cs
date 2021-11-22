@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -158,8 +159,8 @@ namespace aus.Extension
         {
             int d = source.Length / w * h;
             Debug.Assert(source.Length == w * h * d);
-            T[,,] buff3D = new T[h, w, d];
-            Buffer.BlockCopy(source, 0, buff3D, 0, h * w);
+            T[,,] buff3D = new T[d, h, w];
+            Buffer.BlockCopy(source, 0, buff3D, 0, d * h * w * Marshal.SizeOf(default(T)));
             return buff3D;
         }
 
