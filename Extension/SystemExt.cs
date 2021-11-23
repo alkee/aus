@@ -157,7 +157,7 @@ namespace aus.Extension
 
         public static T[,,] To3D<T>(this T[] source, int w, int h)
         {
-            int d = source.Length / w * h;
+            int d = source.Length / (w * h);
             Debug.Assert(source.Length == w * h * d);
             T[,,] buff3D = new T[d, h, w];
             Buffer.BlockCopy(source, 0, buff3D, 0, d * h * w * Marshal.SizeOf(default(T)));
