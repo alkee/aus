@@ -1,6 +1,8 @@
 ﻿// https://bitbucket.org/alkee/aus
 using JeremyAnsel.Media.WavefrontObj; // https://github.com/JeremyAnsel/JeremyAnsel.Media.WavefrontObj
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -14,6 +16,7 @@ namespace aus.Geometry
         [Header("Initial load settings")]
         [SerializeField]
         private string sourceFilePath;
+
         [Tooltip("flip x coordination for left hand system")]
         [SerializeField]
         private bool flipXcoordination = true;
@@ -27,9 +30,17 @@ namespace aus.Geometry
         public UnityEvent<WavefrontObjMesh> onLoad;
 
         public string SourceFilePath { get; private set; }
-        public MeshFilter GetMeshFilter()
+
+        public MeshFilter GetMeshFilter(int index = 0)
         {
-            return GetComponentInChildren<MeshFilter>();
+            if (index >= transform.childCount) return null;
+            return transform.GetChild(index).GetComponent<MeshFilter>();
+        }
+
+        public MeshRenderer GetMeshRenderer(int index = 0)
+        {
+            if (index >= transform.childCount) return null;
+            return transform.GetChild(index).GetComponent<MeshRenderer>();
         }
 
         public void Clear()
@@ -41,6 +52,18 @@ namespace aus.Geometry
             SourceFilePath = null;
         }
 
+        public static async Task<WavefrontObjMesh> CreateObjMesh(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
+        {
+            string fileName = Path.GetFileName(sourceFilePath);
+            var meshObj = new GameObject(fileName);
+            var wavefront = meshObj.AddComponent<WavefrontObjMesh>();
+
+            await wavefront.LoadAsync(sourceFilePath, flipXcoordination, shader);
+
+            return wavefront;
+        }
+
+        [Obsolete("Use CreateObjMesh instead.")]
         public static GameObject CreateObject(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
         {
             if (shader == null) shader = Shader.Find("Legacy Shaders/Diffuse"); // project 기본설정으로 포함되어있는 shader (Project settings > Graphics > Always Included Shaders
