@@ -52,13 +52,21 @@ namespace aus.Geometry
             SourceFilePath = null;
         }
 
-        public static async Task<WavefrontObjMesh> CreateObjMesh(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
+        public static async Task<WavefrontObjMesh> CreateObjMeshAsync(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
+        {
+            // TODO: objFile.MaterialLibraries support
+            var material = new Material(shader ?? GetDefaultDiffuseShader());
+
+            return await CreateObjMeshAsync(sourceFilePath, material, flipXcoordination);
+        }
+
+        public static async Task<WavefrontObjMesh> CreateObjMeshAsync(string sourceFilePath, Material material, bool flipXcoordination = true)
         {
             string fileName = Path.GetFileName(sourceFilePath);
             var meshObj = new GameObject(fileName);
             var wavefront = meshObj.AddComponent<WavefrontObjMesh>();
 
-            await wavefront.LoadAsync(sourceFilePath, flipXcoordination, shader);
+            await wavefront.LoadAsync(sourceFilePath, material, flipXcoordination);
 
             return wavefront;
         }
@@ -96,12 +104,17 @@ namespace aus.Geometry
 
         public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
         {
+            // TODO: objFile.MaterialLibraries support
+            var material = new Material(shader ?? diffuseShader);
+
+            return await LoadAsync(sourceFilePath, material, flipXcoordination);
+        }
+
+        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, Material material, bool flipXcoordination = true)
+        {
             Clear();
 
-            // TODO: objFile.MaterialLibraries support
-            var defaultMaterial = new Material(shader ?? diffuseShader);
             ObjFile objFile = null;
-
             await Task.Run(() =>
             { // material 이나 transform 을 다루는 함수는 main thread 에서 작동해야해서 Task 로 넣을 수 없다.
                 Debug.Log($"loading mesh from {sourceFilePath}");
@@ -109,7 +122,7 @@ namespace aus.Geometry
             });
 
             // TODO: group mesh/sub mesh 지원
-            var go = CreateMeshObject(objFile, defaultMaterial, flipXcoordination);
+            var go = CreateMeshObject(objFile, material, flipXcoordination);
             go.transform.parent = transform;
             if (go) SourceFilePath = sourceFilePath;
             onLoad?.Invoke(this);
@@ -155,15 +168,20 @@ namespace aus.Geometry
             return obj;
         }
 
+        private static Shader GetDefaultDiffuseShader()
+        {
+            // 참조가 없어 shader 가 resource 에 포함되지 않을 경우 build 된 실행환경에서 오류발생한다.
+            // project 기본설정으로 포함되어있는 shader (Project settings > Graphics > Always Included Shaders
+            return Shader.Find("Legacy Shaders/Diffuse");
+        }
+
         #region Unity message handlers
 
         private void Awake()
         {
             if (!diffuseShader)
             { // initializer 에서 Shader.Find 를 사용할 수 없다.
-                // 참조가 없어 shader 가 resource 에 포함되지 않을 경우 build 된 실행환경에서 오류발생한다.
-                // project 기본설정으로 포함되어있는 shader (Project settings > Graphics > Always Included Shaders
-                diffuseShader = Shader.Find("Legacy Shaders/Diffuse");
+                diffuseShader = GetDefaultDiffuseShader();
                 Debug.Assert(diffuseShader);
             }
         }
