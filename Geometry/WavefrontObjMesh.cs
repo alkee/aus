@@ -14,6 +14,7 @@ namespace aus.Geometry
         : MonoBehaviour
     {
         [Header("Initial load settings")]
+        [Tooltip("file path from StreamingAssets or Absolute path")]
         [SerializeField]
         private string sourceFilePath;
 
@@ -97,12 +98,31 @@ namespace aus.Geometry
             // TODO: group mesh/sub mesh 지원
             var go = CreateMeshObject(objFile, defaultMaterial, flipXcoordination);
             go.transform.parent = transform;
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.transform.localScale = Vector3.one;
+
             if (go) SourceFilePath = sourceFilePath;
             onLoad?.Invoke(this);
             return new GameObject[] { go };
         }
 
-        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, bool flipXcoordination = true, Shader shader = null)
+        public IEnumerable<GameObject> Load(string sourceFilePath, Shader shader = null)
+        {
+            return Load(sourceFilePath, flipXcoordination, shader);
+        }
+
+        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, Material material)
+        {
+            return await LoadAsync(sourceFilePath, material, flipXcoordination);
+        }
+
+        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, Shader shader = null)
+        {
+            return await LoadAsync(sourceFilePath, flipXcoordination, shader);
+        }
+
+        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, bool flipXcoordination, Shader shader = null)
         {
             // TODO: objFile.MaterialLibraries support
             var material = new Material(shader ?? diffuseShader);
@@ -110,7 +130,7 @@ namespace aus.Geometry
             return await LoadAsync(sourceFilePath, material, flipXcoordination);
         }
 
-        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, Material material, bool flipXcoordination = true)
+        public async Task<IEnumerable<GameObject>> LoadAsync(string sourceFilePath, Material material, bool flipXcoordination)
         {
             Clear();
 
@@ -124,6 +144,10 @@ namespace aus.Geometry
             // TODO: group mesh/sub mesh 지원
             var go = CreateMeshObject(objFile, material, flipXcoordination);
             go.transform.parent = transform;
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.transform.localScale = Vector3.one;
+
             if (go) SourceFilePath = sourceFilePath;
             onLoad?.Invoke(this);
             return new GameObject[] { go };
@@ -188,7 +212,11 @@ namespace aus.Geometry
 
         private async void Start()
         {
-            if (string.IsNullOrEmpty(sourceFilePath)) return;
+            if (string.IsNullOrWhiteSpace(sourceFilePath)) return;
+            if (File.Exists(sourceFilePath) == false)
+            {
+                sourceFilePath = Path.Combine(Application.streamingAssetsPath, sourceFilePath);
+            }
             await LoadAsync(sourceFilePath, flipXcoordination);
         }
 
