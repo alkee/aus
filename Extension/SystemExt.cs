@@ -50,23 +50,23 @@ namespace aus.Extension
         { // see UnityExt.FillEllipsoid
             Debug.Assert(src.Length == dim.x * dim.y * dim.z);
 
-            var rxSqr = radius.x * radius.x;
-            var rySqr = radius.y * radius.y;
-            var rzSqr = radius.z * radius.z;
-            var rSqr = rxSqr * rySqr * rzSqr;
+            long rxSqr = radius.x * radius.x;
+            long rySqr = radius.y * radius.y;
+            long rzSqr = radius.z * radius.z;
+            long rSqr = rxSqr * rySqr * rzSqr;
 
-            for (var x = pos.x - radius.x; x < pos.x + radius.x + 1; ++x)
+            for (long x = pos.x - radius.x; x < pos.x + radius.x + 1; ++x)
             {
                 if (x < 0 || x >= dim.x) continue;
-                var xSqr = (pos.x - x) * (pos.x - x);
-                for (var y = pos.y - radius.y; y < pos.y + radius.y + 1; ++y)
+                long xSqr = (pos.x - x) * (pos.x - x);
+                for (long y = pos.y - radius.y; y < pos.y + radius.y + 1; ++y)
                 {
                     if (y < 0 || y >= dim.y) continue;
-                    var ySqr = (pos.y - y) * (pos.y - y);
-                    for (var z = pos.z - radius.z; z < pos.z + radius.z + 1; ++z)
+                    long ySqr = (pos.y - y) * (pos.y - y);
+                    for (long z = pos.z - radius.z; z < pos.z + radius.z + 1; ++z)
                     {
                         if (z < 0 || z >= dim.z) continue;
-                        var zSqr = (pos.z - z) * (pos.z - z);
+                        long zSqr = (pos.z - z) * (pos.z - z);
                         if (xSqr * rySqr * rzSqr + ySqr * rxSqr * rzSqr + zSqr * rxSqr * rySqr < rSqr)
                         {
                             src[x + y * dim.x + z * dim.x * dim.y] = val;
@@ -85,23 +85,23 @@ namespace aus.Extension
         {
             Debug.Assert(src.Length == dim.x * dim.y * dim.z);
 
-            var rxSqr = radius.x == 0 ? 1 : radius.x * radius.x;
-            var rySqr = radius.y == 0 ? 1 : radius.y * radius.y;
-            var rzSqr = radius.z == 0 ? 1 : radius.z * radius.z;
-            var rSqr = rxSqr * rySqr * rzSqr;
+            long rxSqr = radius.x == 0 ? 1 : radius.x * radius.x;
+            long rySqr = radius.y == 0 ? 1 : radius.y * radius.y;
+            long rzSqr = radius.z == 0 ? 1 : radius.z * radius.z;
+            long rSqr = rxSqr * rySqr * rzSqr;
 
-            for (var x = pos.x - radius.x; x < pos.x + radius.x + 1; ++x)
+            for (long x = pos.x - radius.x; x < pos.x + radius.x + 1; ++x)
             {
                 if (x < 0 || x >= dim.x) continue;
-                var xSqr = (pos.x - x) * (pos.x - x);
-                for (var y = pos.y - radius.y; y < pos.y + radius.y + 1; ++y)
+                long xSqr = (pos.x - x) * (pos.x - x);
+                for (long y = pos.y - radius.y; y < pos.y + radius.y + 1; ++y)
                 {
                     if (y < 0 || y >= dim.y) continue;
-                    var ySqr = (pos.y - y) * (pos.y - y);
-                    for (var z = pos.z - radius.z; z < pos.z + radius.z + 1; ++z)
+                    long ySqr = (pos.y - y) * (pos.y - y);
+                    for (long z = pos.z - radius.z; z < pos.z + radius.z + 1; ++z)
                     {
                         if (z < 0 || z >= dim.z) continue;
-                        var zSqr = (pos.z - z) * (pos.z - z);
+                        long zSqr = (pos.z - z) * (pos.z - z);
                         if (xSqr * rySqr * rzSqr + ySqr * rxSqr * rzSqr + zSqr * rxSqr * rySqr < rSqr)
                         {
                             src[x + y * dim.x + z * dim.x * dim.y] = val;
