@@ -103,6 +103,7 @@ namespace aus.Geometry
             go.transform.localScale = Vector3.one;
 
             if (go) SourceFilePath = sourceFilePath;
+            this.flipXcoordination = flipXcoordination;
             onLoad?.Invoke(this);
             return new GameObject[] { go };
         }
@@ -149,6 +150,7 @@ namespace aus.Geometry
             go.transform.localScale = Vector3.one;
 
             if (go) SourceFilePath = sourceFilePath;
+            this.flipXcoordination = flipXcoordination;
             onLoad?.Invoke(this);
             return new GameObject[] { go };
         }
