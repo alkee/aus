@@ -25,6 +25,7 @@ namespace aus.Debugging
             foreach (var f in fields)
             {
                 if (f.FieldType.IsValueType) continue;
+                Debug.Assert(f.GetValue(src) != null, $"member {f.Name} has no value in {src.GetType().Name}");
                 Debug.Assert(!f.GetValue(src).Equals(null), "member " + f.Name + " should not be null in " + src.GetType().Name);
             }
         }

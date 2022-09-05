@@ -42,6 +42,10 @@ namespace aus.Example
         public GameObjects GameObjects;
         public Transforms Transforms;
 
+        [Header("internal ui references")]
+        public InputField geometry_localFilePath;
+        public Text geometry_message;
+
         public void InitEventTriggerAwake(string value)
         {
             InitEventTriggerOutput.text = value;
@@ -92,6 +96,27 @@ namespace aus.Example
 
         private class SingletonSample : Singleton<SingletonSample>
         {
+        }
+
+        private Geometry.WavefrontObjMesh obj;
+        public async void OnClick_LoadWaveFrontObjButton()
+        {
+            geometry_message.text = "";
+            var filePath = geometry_localFilePath.text;
+            if (System.IO.File.Exists(filePath)==false)
+            {
+                geometry_message.text = $"FILE NOT FOUND : {filePath}";
+                return;
+            }
+            if (obj) Destroy(obj.gameObject);
+
+            geometry_message.text = "Loading...";
+
+            obj = await Geometry.WavefrontObjMesh.CreateObjMeshAsync(filePath);
+            geometry_message.text = "";
+
+            obj.transform.localScale = Vector3.one * 0.001f;
+            obj.transform.Translate(Vector3.one);
         }
     }
 }

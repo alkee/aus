@@ -174,6 +174,10 @@ namespace aus.Geometry
             // mesh filter setup
             var mf = obj.AddComponent<MeshFilter>();
             var mesh = mf.mesh;
+            if (vertices.Length > ushort.MaxValue)
+            {
+                mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+            }
             mesh.vertices = vertices;
             mesh.triangles = faces.ToArray();
             if (normals.Length == vertices.Length)
