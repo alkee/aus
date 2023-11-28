@@ -1,0 +1,22 @@
+{
+  "name": "net.alkee.aus",
+  "version": "1.0.0",
+  "description": "Alkee's Unity code Snippets",
+  "displayName": "AUS",
+  "unity": "2022.3",
+  "author": {
+    "name": "alkee",
+    "email": "alkeena+unity@gmail.com",
+    "url": "https://github.com/alkee"
+  },
+  "changelogUrl": "https://github.com/alkee/aus",
+  "documentationUrl": "https://github.com/alkee/aus",
+  "hideInEditor": false,
+  "keywords": [
+    "lightweight",
+    "package",
+    "ui",
+    "event"
+  ],
+  "dependencies": {}
+}
