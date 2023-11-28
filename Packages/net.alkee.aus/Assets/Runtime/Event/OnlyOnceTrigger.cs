@@ -1,6 +1,4 @@
-﻿// https://bitbucket.org/alkee/aus
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace aus.Event

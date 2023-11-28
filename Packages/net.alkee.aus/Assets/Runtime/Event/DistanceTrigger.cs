@@ -1,6 +1,4 @@
-﻿// https://bitbucket.org/alkee/aus
-
-using aus.Property;
+﻿using aus.Property;
 using UnityEngine;
 using UnityEngine.Events;
 #if UNITY_EDITOR
@@ -10,7 +8,7 @@ using UnityEditor;
 namespace aus.Event
 {
     /// <summary>
-    /// Raising event by object distance
+    ///     Raising event by object distance
     /// </summary>
     public class DistanceTrigger : MonoBehaviour
     {

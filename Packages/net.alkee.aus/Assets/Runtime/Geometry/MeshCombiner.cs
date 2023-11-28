@@ -1,9 +1,5 @@
-﻿// https://bitbucket.org/alkee/aus
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace aus.Geometry
 {
@@ -96,22 +92,4 @@ namespace aus.Geometry
         }
 
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(MeshCombiner))]
-    public class MeshCombinerEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            var combiner = (target as MeshCombiner);
-
-            if (GUILayout.Button("Combine/Refresh"))
-            {
-                combiner.CombineMeshes();
-            }
-        }
-    }
-#endif
 }

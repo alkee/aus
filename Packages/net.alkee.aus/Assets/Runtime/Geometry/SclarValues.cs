@@ -1,6 +1,4 @@
-﻿// https://bitbucket.org/alkee/aus
-
-using aus.Extension;
+﻿using aus.Extension;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

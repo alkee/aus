@@ -1,5 +1,4 @@
-﻿// https://bitbucket.org/alkee/aus
-using JeremyAnsel.Media.WavefrontObj; // https://github.com/JeremyAnsel/JeremyAnsel.Media.WavefrontObj
+﻿using JeremyAnsel.Media.WavefrontObj; // https://github.com/JeremyAnsel/JeremyAnsel.Media.WavefrontObj
 using System;
 using System.Collections.Generic;
 using System.IO;

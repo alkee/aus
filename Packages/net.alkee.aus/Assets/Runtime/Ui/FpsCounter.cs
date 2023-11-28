@@ -1,4 +1,3 @@
-// https://bitbucket.org/alkee/aus
 using UnityEngine;
 using UnityEngine.UI;
 

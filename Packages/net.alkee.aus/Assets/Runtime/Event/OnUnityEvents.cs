@@ -1,6 +1,4 @@
-﻿// https://bitbucket.org/alkee/aus
-
-using aus.Property;
+﻿using aus.Property;
 using UnityEngine;
 using UnityEngine.Events;
 
