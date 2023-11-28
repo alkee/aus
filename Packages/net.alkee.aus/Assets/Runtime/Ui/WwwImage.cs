@@ -87,6 +87,7 @@ namespace aus.Ui
 
             ApplyTexture(LoadingImage);
             // TODO: download into temporary file to handle errors on the file
+            Debug.Log($"requesting {ImageUrl}");
             var www = UnityWebRequest.Get(ImageUrl);
 #if UNITY_2017_2_OR_NEWER
             yield return www.SendWebRequest();

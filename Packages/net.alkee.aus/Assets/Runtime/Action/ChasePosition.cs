@@ -33,7 +33,9 @@ namespace aus.Action
         {
             if (rb != null)
             {
+                rb.isKinematic = false;
                 rb.velocity = Vector3.zero; // stop
+                rb.isKinematic = true;
             }
         }
 
